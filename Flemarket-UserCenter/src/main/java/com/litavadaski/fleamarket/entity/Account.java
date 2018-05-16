@@ -69,5 +69,43 @@ public class Account {
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + permission;
 		return result;
+	}
+	
+	@Override
+	public String toString() {
+		return "Account [id=" + id + ", email=" + email + ", password=" + password + ", Date=" + Date + ", permission="
+				+ permission + ", isLogin=" + isLogin + "]";
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Account other = (Account) obj;
+		if (Date == null) {
+			if (other.Date != null)
+				return false;
+		} else if (!Date.equals(other.Date))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (id != other.id)
+			return false;
+		if (isLogin != other.isLogin)
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (permission != other.permission)
+			return false;
+		return true;
 	}	
 }

@@ -16,13 +16,6 @@ public class Response<T> {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
-	public T getT() {
-		return value;
-	}
-	public void setT(T value) {
-		this.value = value;
-	}
-	
 	public T getValue() {
 		return value;
 	}
