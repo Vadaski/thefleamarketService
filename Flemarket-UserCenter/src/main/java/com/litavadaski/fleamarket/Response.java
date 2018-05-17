@@ -1,4 +1,4 @@
-package com.litavadaski.fleamarket.entity;
+package com.litavadaski.fleamarket;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

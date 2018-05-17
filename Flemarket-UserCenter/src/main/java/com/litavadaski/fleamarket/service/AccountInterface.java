@@ -1,7 +1,7 @@
 package com.litavadaski.fleamarket.service;
 
+import com.litavadaski.fleamarket.Response;
 import com.litavadaski.fleamarket.entity.Account;
-import com.litavadaski.fleamarket.entity.Response;
 
 public interface AccountInterface {
 	

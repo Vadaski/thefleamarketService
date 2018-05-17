@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.litavadaski.fleamarket.Response;
 import com.litavadaski.fleamarket.entity.Account;
-import com.litavadaski.fleamarket.entity.Response;
 import com.litavadaski.fleamarket.service.AccountService;
 
 @RestController

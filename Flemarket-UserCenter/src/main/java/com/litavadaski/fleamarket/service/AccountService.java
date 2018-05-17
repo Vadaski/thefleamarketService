@@ -7,17 +7,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.litavadaski.fleamarket.Response;
 import com.litavadaski.fleamarket.entity.Account;
-import com.litavadaski.fleamarket.entity.Response;
 import com.litavadaski.fleamarket.repository.AccountRepository;
-
-
 
 @Service
 public class AccountService implements AccountInterface{
 	
 	@Autowired
 	AccountRepository repo;
+	@Autowired
+	UserInfoService service;
 	
 	Logger logger = LoggerFactory.getLogger(Account.class);
 	
@@ -36,10 +36,12 @@ public class AccountService implements AccountInterface{
 			repo.save(account);
 			response.setStatus(true);
 			response.setValue(account);
-			logger.debug("AccountService："+account.getId()+"号用户注册成功");
+			//自动创建用户信息表
+			service.createUserInfo(account.getId());
+			logger.debug(account.getId()+"号用户注册成功");
 			return response;		
 		}
-		logger.debug("AccountService：注册失败");
+		logger.debug("注册失败");
 		response.setStatus(false);
 		response.setErrormessage("当前邮箱已被注册，请更换邮箱");
 		return response;
@@ -60,6 +62,8 @@ public class AccountService implements AccountInterface{
 		}
 		if(account.getPassword().equals(password)) {
 			repo.deleteById(account.getId());
+			//同时删除该用户的个人信息
+			service.deleteUserInfoById(account.getId());
 			logger.debug("AccountService："+account.getId()+"注销成功");
 			response.setValue(true);
 			response.setStatus(true);
@@ -92,7 +96,7 @@ public class AccountService implements AccountInterface{
 			response.setStatus(true);
 			return response;
 		}
-		logger.debug("AccountService：密码更改失败");
+		logger.debug("密码更改失败");
 		response.setValue(false);
 		response.setStatus(false);
 		response.setErrormessage("输入的密码有误，请重新输入");
