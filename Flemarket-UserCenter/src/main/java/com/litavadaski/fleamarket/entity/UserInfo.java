@@ -15,7 +15,7 @@ public class UserInfo {
 	private String address;
 	private int balance;
 	//头像图片
-	private Bson profile;
+	//private Bson profile;
 	//评价，初始为80，满分100
 	private int eva;
 	private String signature;
@@ -51,12 +51,12 @@ public class UserInfo {
 	public void setBalance(int balance) {
 		this.balance = balance;
 	}
-	public Bson getProfile() {
-		return profile;
-	}
-	public void setProfile(Bson profile) {
-		this.profile = profile;
-	}
+//	public Bson getProfile() {
+//		return profile;
+//	}
+//	public void setProfile(Bson profile) {
+//		this.profile = profile;
+//	}
 	public int getEva() {
 		return eva;
 	}
@@ -85,7 +85,7 @@ public class UserInfo {
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + phone;
-		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
+		//result = prime * result + ((profile == null) ? 0 : profile.hashCode());
 		result = prime * result + sessionList;
 		result = prime * result + ((signature == null) ? 0 : signature.hashCode());
 		return result;
@@ -117,11 +117,11 @@ public class UserInfo {
 			return false;
 		if (phone != other.phone)
 			return false;
-		if (profile == null) {
-			if (other.profile != null)
-				return false;
-		} else if (!profile.equals(other.profile))
-			return false;
+//		if (profile == null) {
+//			if (other.profile != null)
+//				return false;
+//		} else if (!profile.equals(other.profile))
+//			return false;
 		if (sessionList != other.sessionList)
 			return false;
 		if (signature == null) {
@@ -134,7 +134,7 @@ public class UserInfo {
 	@Override
 	public String toString() {
 		return "UserInfo [id=" + id + ", name=" + name + ", phone=" + phone + ", address=" + address + ", balance="
-				+ balance + ", profile=" + profile + ", eva=" + eva + ", signature=" + signature + ", sessionList="
+				+ balance + ", eva=" + eva + ", signature=" + signature + ", sessionList="
 				+ sessionList + "]";
 	}
 	public UserInfo() {
