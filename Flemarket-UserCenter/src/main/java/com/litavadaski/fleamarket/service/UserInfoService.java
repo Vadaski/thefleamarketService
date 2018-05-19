@@ -32,7 +32,7 @@ public class UserInfoService implements UserInfoInterface{
 		return new Response<UserInfo>();
 	}
 	
-	//删除用户信息
+	//自动删除用户信息
 	@Override
 	public void deleteUserInfoById(int id) {
 		repo.deleteById(id);
