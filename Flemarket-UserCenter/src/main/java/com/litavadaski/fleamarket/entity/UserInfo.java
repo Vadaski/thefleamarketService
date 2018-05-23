@@ -2,12 +2,16 @@ package com.litavadaski.fleamarket.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import org.bson.conversions.Bson;
 
 @Entity
 public class UserInfo {
 	@Id
+//	@OneToOne
+//	@PrimaryKeyJoinColumn
 	private int id;
 	private String name;
 	private int phone;
@@ -19,7 +23,7 @@ public class UserInfo {
 	//评价，初始为80，满分100
 	private int eva;
 	private String signature;
-	//会话lie'bi
+	//会话列表
 	private int sessionList;
 	public int getId() {
 		return id;

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,16 +31,18 @@ public class AccountController {
 	}
 	
 	@DeleteMapping
-	public @ResponseBody Response<Boolean> deleteAccount(String email,String password){
+	public Response<Boolean> deleteAccount(@RequestParam String email,@RequestParam String password){
 		Response<Boolean> response = 
 				service.deleteAccount(email, password);
 		return response;
 	}
 	
 	@PostMapping
-	public @ResponseBody Response<Boolean> updatePassword(String email,String password,String newPassword){
+	public Response<Boolean> updatePassword(@RequestParam String email,@RequestParam String password,@RequestParam String newPassword){
 		Response<Boolean> response =
 		service.updatePassword(email, password, newPassword);
 		return response;
 	}
+	
+	
 }
