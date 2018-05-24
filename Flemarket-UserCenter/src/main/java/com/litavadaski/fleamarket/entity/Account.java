@@ -1,15 +1,11 @@
 package com.litavadaski.fleamarket.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 
-import org.hibernate.annotations.Cascade;
 import org.springframework.lang.NonNull;
 
 @Entity
@@ -17,9 +13,6 @@ public class Account {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
-//	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
-//	@OneToOne(cascade = CascadeType.ALL)
-//	private UserInfo info;
 	@Email
 	@NonNull
 	private String email;
@@ -30,6 +23,8 @@ public class Account {
 	//普通用户权限为1
 	private int permission;
 	private boolean isLogin;
+	private String captchaCode;  
+    private String captchaValue;  
 	public int getId() {
 		return id;
 	}
@@ -66,12 +61,23 @@ public class Account {
 	public void setLogin(boolean isLogin) {
 		this.isLogin = isLogin;
 	}
-	
-	
+	public String getCaptchaCode() {
+		return captchaCode;
+	}
+	public void setCaptchaCode(String captchaCode) {
+		this.captchaCode = captchaCode;
+	}
+	public String getCaptchaValue() {
+		return captchaValue;
+	}
+	public void setCaptchaValue(String captchaValue) {
+		this.captchaValue = captchaValue;
+	}
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", email=" + email + ", password=" + password + ", Date=" + Date
-				+ ", permission=" + permission + ", isLogin=" + isLogin + "]";
+		return "Account [id=" + id + ", email=" + email + ", password=" + password + ", Date=" + Date + ", permission="
+				+ permission +  ", captchaCode=" + captchaCode + ", captchaValue="
+				+ captchaValue + "]";
 	}
 	
 }

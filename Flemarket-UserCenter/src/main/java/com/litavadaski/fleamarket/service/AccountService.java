@@ -28,15 +28,6 @@ public class AccountService implements AccountInterface{
 	
 	Logger logger = LoggerFactory.getLogger(Account.class);
 	
-//	String generateToken(Map<String, Object> claims) {
-//		return Jwts.builder()
-//	            .setClaims(claims)
-//	            .setExpiration(generateExpirationDate())
-//	            .signWith(SignatureAlgorithm.HS512, secret)
-//	            .compact();
-//
-//	}
-	
 	//注册模块
 	@Override
 	public Response<Account> createAccount(Account account) {
@@ -103,12 +94,12 @@ public class AccountService implements AccountInterface{
 			response.setErrormessage("未查找到该账户");
 			return response;
 		}
-//		if(!account.get(0).isLogin()) {
-//			response.setStatus(false);
-//			response.setValue(false);
-//			response.setErrormessage("请先登陆");
-//			return response;
-//		}
+		if(!account.get(0).isLogin()) {
+			response.setStatus(false);
+			response.setValue(false);
+			response.setErrormessage("请先登陆");
+			return response;
+		}
 		if(account.get(0).getPassword().equals(password)) {
 			account.get(0).setPassword(newPassword);
 			repo.save(account.get(0));
@@ -123,19 +114,38 @@ public class AccountService implements AccountInterface{
 		response.setErrormessage("输入的密码有误，请重新输入");
 		return response;
 	}
+	
 	public Response<Boolean> Loggin(String email,String password){
 		Response<Boolean> response = new Response<>();
 		List<Account> account = repo.findByEmail(email);
 		if(account.size()<=0) {
+			logger.debug("输入的账号有误");
 			response.setErrormessage("输入的账号有误，请重新输入");
 			return response;
 		}
 		if (account.get(0).getPassword().equals(password)) {
+			logger.debug("密码修改成功");
 			account.get(0).setLogin(true);
 			response.setStatus(true);
 			response.setValue(true);
 		}
+		logger.debug("输入密码错误");
 		response.setErrormessage("输入的密码有误，请重新输入");
+		return response;
+	}
+	
+	public Response<Boolean> Unloggin(String email) {
+		Response<Boolean> response = new Response<>();
+		List<Account> account = repo.findByEmail(email);
+		if(account.size()<=0) {
+			logger.debug("输入的账号不存在");
+			response.setErrormessage("输入的账号有误，请重新输入");
+			return response;
+		}
+		logger.debug("成功退出登陆");
+		account.get(0).setLogin(false);
+		response.setStatus(true);
+		response.setValue(true);
 		return response;
 	}
 }
