@@ -3,6 +3,7 @@ package com.litavadaski.fleamarket;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 //返回统一格式
+import com.litavadaski.fleamarket.security.AccessToken;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 
@@ -32,5 +33,5 @@ public class Response<T> {
 	public String toString() {
 		return "Response [status=" + status + ", value=" + value + ", errormessage=" + errormessage + "]";
 	}
-	
+
 }

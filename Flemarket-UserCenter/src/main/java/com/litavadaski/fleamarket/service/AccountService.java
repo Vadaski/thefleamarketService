@@ -28,6 +28,7 @@ public class AccountService implements AccountInterface{
 	
 	Logger logger = LoggerFactory.getLogger(Account.class);
 	
+
 	//注册模块
 	@Override
 	public Response<Account> createAccount(Account account) {
