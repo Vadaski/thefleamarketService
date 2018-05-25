@@ -9,23 +9,30 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import com.litavadaski.fleamarket.security.HTTPBasicAuthorizeAttribute;
 import com.litavadaski.fleamarket.security.HTTPBearerAuthorizeAttribute;
+import com.litavadaski.fleamarket.service.JsonWebTokenService;
 
 @EnableJpaRepositories
 @SpringBootApplication
 
 public class FlemarketUserCenterApplication {
 	
-//	@Bean  
-//    public FilterRegistrationBean  basicFilterRegistrationBean() {  
-//        FilterRegistrationBean registrationBean = new FilterRegistrationBean();  
-//        HTTPBasicAuthorizeAttribute httpBasicFilter = new HTTPBasicAuthorizeAttribute();  
-//        registrationBean.setFilter(httpBasicFilter);  
-//        List<String> urlPatterns = new ArrayList<String>();  
-//        urlPatterns.add("/user/getuser");  
-//        registrationBean.setUrlPatterns(urlPatterns);  
-//        return registrationBean;  
-//    }  
+	@Bean
+	public JsonWebTokenService JsonWebTokenService() {
+		return new JsonWebTokenService();
+	}
+	
+	@Bean  
+    public FilterRegistrationBean  basicFilterRegistrationBean() {  
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();  
+        HTTPBasicAuthorizeAttribute httpBasicFilter = new HTTPBasicAuthorizeAttribute();  
+        registrationBean.setFilter(httpBasicFilter);  
+        List<String> urlPatterns = new ArrayList<String>();  
+        urlPatterns.add("/UserInfo");  
+        registrationBean.setUrlPatterns(urlPatterns);  
+        return registrationBean;  
+    }  
       
     @Bean  
     public FilterRegistrationBean jwtFilterRegistrationBean(){  
@@ -33,7 +40,7 @@ public class FlemarketUserCenterApplication {
         HTTPBearerAuthorizeAttribute httpBearerFilter = new HTTPBearerAuthorizeAttribute();  
         registrationBean.setFilter(httpBearerFilter);  
         List<String> urlPatterns = new ArrayList<String>();  
-        urlPatterns.add("/user/getusers");  
+        urlPatterns.add("/UserInfo");  
         registrationBean.setUrlPatterns(urlPatterns);  
         return registrationBean;  
     }  

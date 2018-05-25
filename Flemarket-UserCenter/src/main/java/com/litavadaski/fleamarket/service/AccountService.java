@@ -8,6 +8,7 @@ import org.mockito.internal.stubbing.BaseStubbing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.litavadaski.fleamarket.Response;
@@ -15,6 +16,11 @@ import com.litavadaski.fleamarket.entity.Account;
 import com.litavadaski.fleamarket.entity.UserInfo;
 import com.litavadaski.fleamarket.repository.AccountRepository;
 import com.litavadaski.fleamarket.repository.UserInfoRepository;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 public class AccountService implements AccountInterface{
@@ -25,10 +31,16 @@ public class AccountService implements AccountInterface{
 	UserInfoRepository Urepo;
 	@Autowired
 	UserInfoService service;
+	@Autowired
+	JsonWebTokenService tokenChecker;
+	
+	@Value("${client.base64Secret}")
+	private String base64Secret;
 	
 	Logger logger = LoggerFactory.getLogger(Account.class);
 	
-
+	
+	
 	//注册模块
 	@Override
 	public Response<Account> createAccount(Account account) {
@@ -116,23 +128,30 @@ public class AccountService implements AccountInterface{
 		return response;
 	}
 	
-	public Response<Boolean> Loggin(String email,String password){
-		Response<Boolean> response = new Response<>();
-		List<Account> account = repo.findByEmail(email);
-		if(account.size()<=0) {
-			logger.debug("输入的账号有误");
-			response.setErrormessage("输入的账号有误，请重新输入");
-			return response;
-		}
-		if (account.get(0).getPassword().equals(password)) {
-			logger.debug("密码修改成功");
-			account.get(0).setLogin(true);
-			response.setStatus(true);
-			response.setValue(true);
-		}
-		logger.debug("输入密码错误");
-		response.setErrormessage("输入的密码有误，请重新输入");
-		return response;
+	public Object Loggin(String email,String password,String audience){
+		
+//		Response<String> response = new Response<>();
+//		List<Account> account = repo.findByEmail(email);
+//		if(account.size()<=0) {
+//			logger.debug("输入的账号有误");
+//			response.setErrormessage("输入的账号有误，请重新输入");
+//			return response;
+//		}
+//		if (account.get(0).getPassword().equals(password)) {
+//			logger.debug("密码修改成功");
+//			account.get(0).setLogin(true);
+//			response.setStatus(true);
+//			String compactJws = Jwts.builder()
+//					  .setSubject(email)
+//					  .signWith(SignatureAlgorithm.HS512, base64Secret)
+//					  .compact();
+//			response.setValue(compactJws);
+//			return response;
+//		}
+//		logger.debug("输入密码错误");
+//		response.setErrormessage("输入的密码有误，请重新输入");
+//		return response;
+		return tokenChecker.getAccessToken(email, password, audience);
 	}
 	
 	public Response<Boolean> Unloggin(String email) {
@@ -149,4 +168,6 @@ public class AccountService implements AccountInterface{
 		response.setValue(true);
 		return response;
 	}
+	
+	
 }

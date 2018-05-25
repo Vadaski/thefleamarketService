@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import com.litavadaski.fleamarket.service.AccountService;
 public class AccountController {
 	@Autowired 
 	AccountService service;
+	
 	
 	Logger logger = LoggerFactory.getLogger(AccountController.class);
 	
@@ -44,5 +46,9 @@ public class AccountController {
 		return response;
 	}
 	
+	@GetMapping(path="/login")
+	public Object loggin(String email,String password,String audience){
+		return service.Loggin(email, password,audience);
+	}
 	
 }
