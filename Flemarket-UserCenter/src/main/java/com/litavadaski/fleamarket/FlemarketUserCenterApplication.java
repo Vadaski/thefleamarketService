@@ -18,10 +18,10 @@ import com.litavadaski.fleamarket.service.JsonWebTokenService;
 
 public class FlemarketUserCenterApplication {
 	
-	@Bean
-	public JsonWebTokenService JsonWebTokenService() {
-		return new JsonWebTokenService();
-	}
+//	@Bean
+//	public JsonWebTokenService JsonWebTokenService() {
+//		return new JsonWebTokenService();
+//	}
 	
 	@Bean  
     public FilterRegistrationBean  basicFilterRegistrationBean() {  

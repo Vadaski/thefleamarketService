@@ -169,5 +169,16 @@ public class AccountService implements AccountInterface{
 		return response;
 	}
 	
+	public Response<Account> findByEmail(String email) {
+		List<Account> account = repo.findByEmail(email);
+		Response<Account> response = new Response<>();
+		if (account.isEmpty()) {
+			response.setErrormessage("不存在该账户");
+			return response;
+		}
+		response.setValue(account.get(0));
+		response.setStatus(true);
+		return response;
+	}
 	
 }

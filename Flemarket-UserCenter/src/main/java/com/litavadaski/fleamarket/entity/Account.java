@@ -25,6 +25,7 @@ public class Account {
 	private boolean isLogin;
 	private String captchaCode;  
     private String captchaValue;  
+    private String token;
 	public int getId() {
 		return id;
 	}
@@ -73,11 +74,17 @@ public class Account {
 	public void setCaptchaValue(String captchaValue) {
 		this.captchaValue = captchaValue;
 	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", email=" + email + ", password=" + password + ", Date=" + Date + ", permission="
-				+ permission +  ", captchaCode=" + captchaCode + ", captchaValue="
-				+ captchaValue + "]";
+		return "Account [email=" + email + ", password=" + password + ", Date=" + Date + ", isLogin=" + isLogin
+				+ ", captchaCode=" + captchaCode + ", captchaValue=" + captchaValue + ", token=" + token + "]";
 	}
+	
 	
 }

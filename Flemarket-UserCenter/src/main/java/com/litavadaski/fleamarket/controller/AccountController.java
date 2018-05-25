@@ -1,5 +1,7 @@
 package com.litavadaski.fleamarket.controller;
 
+import javax.websocket.server.PathParam;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,4 +53,8 @@ public class AccountController {
 		return service.Loggin(email, password,audience);
 	}
 	
+	@GetMapping(path="/test")
+	public Response<Account> findByEmail(@RequestParam String email){
+		return service.findByEmail(email);
+	}
 }

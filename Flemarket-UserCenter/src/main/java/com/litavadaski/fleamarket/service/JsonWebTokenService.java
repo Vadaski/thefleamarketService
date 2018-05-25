@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.stereotype.Service;
 
 import com.litavadaski.fleamarket.Response;
 import com.litavadaski.fleamarket.entity.Account;
 import com.litavadaski.fleamarket.repository.AccountRepository;
 import com.litavadaski.fleamarket.security.AccessToken;
 import com.litavadaski.fleamarket.security.JwtHelper;
-
+@Service
 public class JsonWebTokenService {
 	@Autowired
 	private AccountRepository repo;
@@ -53,8 +53,13 @@ public class JsonWebTokenService {
                     audience, 
                     name,
                     expiresSecond*1000,
-                    base64Secret);  
-              
+                    base64Secret);
+            
+            //TODO:改变account状态失败，无法写入数据库
+            Account account = repo.findByEmail(email).get(0);
+            account.setToken(accessToken);
+            account.setLogin(true);
+            
             //返回accessToken  
             AccessToken accessTokenEntity = new AccessToken();  
             accessTokenEntity.setAccess_token(accessToken);  
