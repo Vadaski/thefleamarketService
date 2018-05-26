@@ -12,7 +12,7 @@ public interface UserInfoInterface {
 	//更改昵称
 	public Response<Boolean> updateName(String name,int id,String token);
 	//更改全部信息
-	public void updateAll(UserInfo userInfo);
+	public Response<Boolean> updateAll(UserInfo userInfo,String token);
 	//用户名模糊查找
 	//public Response<List<UserInfo>> findUserInfoByName(String name,PageRequest page);
 	//更改头像

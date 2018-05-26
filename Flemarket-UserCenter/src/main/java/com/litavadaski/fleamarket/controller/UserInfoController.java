@@ -41,7 +41,7 @@ public class UserInfoController {
 	//更新全部个人信息
 	@PutMapping
 	public boolean update(@RequestBody UserInfo userInfo,@RequestParam String token) {
-		service.updateAll(userInfo);
+		service.updateAll(userInfo,token);
 		return true;
 	}
 	

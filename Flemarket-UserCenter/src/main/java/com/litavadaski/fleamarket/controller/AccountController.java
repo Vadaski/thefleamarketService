@@ -55,7 +55,6 @@ public class AccountController {
 	
 	@GetMapping(path="/test")
 	public Response<Account> findByEmail(@RequestParam String email,@RequestParam String token){
-		service.checkToken(token);
 		return service.findByEmail(email);
 	}
 }

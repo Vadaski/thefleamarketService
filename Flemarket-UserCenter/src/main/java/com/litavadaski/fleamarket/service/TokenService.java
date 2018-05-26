@@ -15,7 +15,7 @@ import com.litavadaski.fleamarket.security.JwtHelper;
 
 import io.jsonwebtoken.Claims;
 @Service
-public class JsonWebTokenService {
+public class TokenService {
 	@Autowired
 	private AccountRepository repo;
 	
@@ -28,7 +28,7 @@ public class JsonWebTokenService {
 	@Value("${client.expiresSecond}")
 	private long expiresSecond;
 	
-	public AccessToken getAccessToken(String email,String password,String audience)  
+	public AccessToken getAccessToken(String email,String audience)  
     {    
         try  
         {  

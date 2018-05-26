@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.litavadaski.fleamarket.security.HTTPBasicAuthorizeAttribute;
 import com.litavadaski.fleamarket.security.HTTPBearerAuthorizeAttribute;
-import com.litavadaski.fleamarket.service.JsonWebTokenService;
+import com.litavadaski.fleamarket.service.TokenService;
 
 @EnableJpaRepositories
 @SpringBootApplication

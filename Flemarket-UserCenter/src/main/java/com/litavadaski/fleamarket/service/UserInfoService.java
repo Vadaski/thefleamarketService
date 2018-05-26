@@ -22,7 +22,7 @@ public class UserInfoService implements UserInfoInterface{
 	@Autowired
 	UserInfoRepository repo;
 	@Autowired
-	JsonWebTokenService tokenChecker;
+	TokenService tokenChecker;
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserInfoService.class);
 	
@@ -67,9 +67,18 @@ public class UserInfoService implements UserInfoInterface{
 	
 	//更改全部信息
 	@Override
-	public void updateAll(UserInfo userInfo){
+	public Response<Boolean> updateAll(UserInfo userInfo,String token){
+		Response<Boolean> response = new Response<>();
+		Response<Boolean> tokenResponse = tokenChecker.checkAccessToken(token);	
+		if (!tokenResponse.getValue()) {
+			response.setErrormessage(tokenResponse.getErrormessage());
+			response.setStatus(false);
+			return response;
+		}
 		repo.save(userInfo);
 		logger.debug("成功更新用户信息");
+		response.setStatus(true);
+		return response;
 	}
 	
 	//更改头像
@@ -108,4 +117,5 @@ public class UserInfoService implements UserInfoInterface{
 		logger.debug("id:"+id+"余额查询成功");
 		return response;
 	}
+	
 }

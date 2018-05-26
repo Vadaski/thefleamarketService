@@ -30,7 +30,7 @@ public class AccountService implements AccountInterface{
 	@Autowired
 	UserInfoService service;
 	@Autowired
-	JsonWebTokenService tokenChecker;
+	TokenService tokenChecker;
 	
 	@Value("${client.base64Secret}")
 	private String base64Secret;
@@ -140,7 +140,7 @@ public class AccountService implements AccountInterface{
 			logger.debug("验证通过");
 			account.setLogin(true);
 			response.setStatus(true);
-			AccessToken accessToken = tokenChecker.getAccessToken(email, password, audience);
+			AccessToken accessToken = tokenChecker.getAccessToken(email, audience);
 			account.setToken(accessToken.getAccess_token());
 			repo.save(account);
 			response.setValue(accessToken);
@@ -183,9 +183,4 @@ public class AccountService implements AccountInterface{
 		return response;
 	}
 	
-	//检查token
-	public Response<Boolean> checkToken(String token) {
-	Response<Boolean> response = tokenChecker.checkAccessToken(token);
-		return response;
-	}
 }
