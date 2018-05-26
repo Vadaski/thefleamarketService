@@ -1,4 +1,6 @@
 package com.litavadaski.fleamarket.service;
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -16,11 +18,7 @@ import com.litavadaski.fleamarket.entity.Account;
 import com.litavadaski.fleamarket.entity.UserInfo;
 import com.litavadaski.fleamarket.repository.AccountRepository;
 import com.litavadaski.fleamarket.repository.UserInfoRepository;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.litavadaski.fleamarket.security.AccessToken;
 
 @Service
 public class AccountService implements AccountInterface{
@@ -69,21 +67,21 @@ public class AccountService implements AccountInterface{
 	//注销账号
 	@Override
 	public Response<Boolean> deleteAccount(String email,String password){
-		List<Account> account = repo.findByEmail(email);
+		List<Account> accountList = repo.findByEmail(email);
 		Response<Boolean> response = new Response<>();
-		
-		if(account.size()<=0) {
+		Account account = accountList.get(0);
+		if(accountList.size()<=0) {
 //			logger.debug(account.get(0).toString());
 			response.setStatus(false);
 			response.setValue(false);
 			response.setErrormessage("未查找到"+email+"账户");
 			return response;
 		}
-		if(account.get(0).getPassword().equals(password)) {
-			repo.deleteById(account.get(0).getId());
+		if(account.getPassword().equals(password)) {
+			repo.deleteById(account.getId());
 //			同时删除该用户的个人信息
-			service.deleteUserInfoById(account.get(0).getId());
-			logger.debug("AccountService："+account.get(0).getId()+"注销成功");
+			service.deleteUserInfoById(account.getId());
+			logger.debug("AccountService："+account.getId()+"注销成功");
 			response.setValue(true);
 			response.setStatus(true);
 			return response;
@@ -98,25 +96,25 @@ public class AccountService implements AccountInterface{
 	//更改密码
 	@Override
 	public Response<Boolean> updatePassword(String email,String password,String newPassword) {
-		List<Account> account = repo.findByEmail(email);
+		List<Account> accountList = repo.findByEmail(email);
 		Response<Boolean> response = new Response<>();
-		
-		if(account.size()<=0) {
+		Account account = accountList.get(0);
+		if(accountList.size()<=0) {
 			response.setStatus(false);
 			response.setValue(false);
 			response.setErrormessage("未查找到该账户");
 			return response;
 		}
-		if(!account.get(0).isLogin()) {
+		if(!account.isLogin()) {
 			response.setStatus(false);
 			response.setValue(false);
 			response.setErrormessage("请先登陆");
 			return response;
 		}
-		if(account.get(0).getPassword().equals(password)) {
-			account.get(0).setPassword(newPassword);
-			repo.save(account.get(0));
-			logger.debug("AccountService："+account.get(0).getId()+"密码更改成功");
+		if(account.getPassword().equals(password)) {
+			account.setPassword(newPassword);
+			repo.save(account);
+			logger.debug("AccountService："+accountList.get(0).getId()+"密码更改成功");
 			response.setValue(true);
 			response.setStatus(true);
 			return response;
@@ -127,58 +125,67 @@ public class AccountService implements AccountInterface{
 		response.setErrormessage("输入的密码有误，请重新输入");
 		return response;
 	}
-	
-	public Object Loggin(String email,String password,String audience){
+	//登陆
+	public Response<AccessToken> Loggin(String email,String password,String audience){	
+		Response<AccessToken> response = new Response<>();
+		List<Account> accountList = repo.findByEmail(email);
+		Account account = accountList.get(0);
+		if(accountList.size()<=0) {
+			logger.debug("输入的账号有误");
+			response.setErrormessage("输入的账号有误，请重新输入");
+			return response;
+		}
+		if (account.getPassword().equals(password)) {
+			logger.debug("验证通过");
+			account.setLogin(true);
+			response.setStatus(true);
+			AccessToken accessToken = tokenChecker.getAccessToken(email, password, audience);
+			account.setToken(accessToken.getAccess_token());
+			repo.save(account);
+			response.setValue(accessToken);
+			return response;
+		}
+		logger.debug("输入密码错误");
+		response.setErrormessage("输入的密码有误，请重新输入");
+		return response;
 		
-//		Response<String> response = new Response<>();
-//		List<Account> account = repo.findByEmail(email);
-//		if(account.size()<=0) {
-//			logger.debug("输入的账号有误");
-//			response.setErrormessage("输入的账号有误，请重新输入");
-//			return response;
-//		}
-//		if (account.get(0).getPassword().equals(password)) {
-//			logger.debug("密码修改成功");
-//			account.get(0).setLogin(true);
-//			response.setStatus(true);
-//			String compactJws = Jwts.builder()
-//					  .setSubject(email)
-//					  .signWith(SignatureAlgorithm.HS512, base64Secret)
-//					  .compact();
-//			response.setValue(compactJws);
-//			return response;
-//		}
-//		logger.debug("输入密码错误");
-//		response.setErrormessage("输入的密码有误，请重新输入");
-//		return response;
-		return tokenChecker.getAccessToken(email, password, audience);
 	}
-	
+	//退出登陆
 	public Response<Boolean> Unloggin(String email) {
 		Response<Boolean> response = new Response<>();
-		List<Account> account = repo.findByEmail(email);
-		if(account.size()<=0) {
+		List<Account> accountList = repo.findByEmail(email);
+		if(accountList.size()<=0) {
 			logger.debug("输入的账号不存在");
 			response.setErrormessage("输入的账号有误，请重新输入");
 			return response;
 		}
 		logger.debug("成功退出登陆");
-		account.get(0).setLogin(false);
+		Account account = accountList.get(0);
+		account.setLogin(false);
+		account.setToken(null);
+		repo.save(account);
 		response.setStatus(true);
 		response.setValue(true);
 		return response;
 	}
-	
+	//查找用户
 	public Response<Account> findByEmail(String email) {
-		List<Account> account = repo.findByEmail(email);
+		List<Account> accountList = repo.findByEmail(email);
 		Response<Account> response = new Response<>();
-		if (account.isEmpty()) {
+		if (accountList.isEmpty()) {
 			response.setErrormessage("不存在该账户");
 			return response;
 		}
-		response.setValue(account.get(0));
+		accountList.get(0).setPassword(null);
+		response.setValue(accountList.get(0));
 		response.setStatus(true);
 		return response;
 	}
 	
+	//检查token
+
+	public Response<Boolean> checkToken(String token) {
+	Response<Boolean> response = tokenChecker.checkAccessToken(token);
+		return response;
+	}
 }

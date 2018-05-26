@@ -16,8 +16,13 @@ public interface AccountInterface {
 	public Response<Boolean> updatePassword(String email,String password,String newPassword);
 	
 	//登陆
-//	public Response<Boolean> Loggin(String email,String password);
+	public Object Loggin(String email,String password,String audience);
 	
 	//退出登陆
-	//public Response<Boolean> Unloggin(int id);
+	public Response<Boolean> Unloggin(String email);
+	
+	//查找用户
+	public Response<Account> findByEmail(String email);
+	
+	//
 }

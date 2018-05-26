@@ -60,8 +60,8 @@ public class UserInfoController {
 	
 	//检查余额
 	@GetMapping
-	public Response<Integer> checkBalance(@RequestParam int id) {
-		return service.checkBalance(id);
+	public Response<Integer> checkBalance(@RequestParam int id,@RequestParam String token) {
+		return service.checkBalance(id,token);
 	}
 	
 	//TODO:传输头像模块还未完成

@@ -21,17 +21,19 @@ import com.litavadaski.fleamarket.repository.UserInfoRepository;
 public class UserInfoService implements UserInfoInterface{
 	@Autowired
 	UserInfoRepository repo;
+	@Autowired
+	JsonWebTokenService tokenChecker;
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserInfoService.class);
 	
 	//自动创建表
-//	@Override
-//	public Response<UserInfo> createUserInfo(int id) {
-//		UserInfo userInfo = new UserInfo();
-//		userInfo.setId(id);
-//		logger.debug("用户信息表创建成功");
-//		return new Response<UserInfo>();
-//	}
+	@Override
+	public Response<UserInfo> createUserInfo(int id) {
+		UserInfo userInfo = new UserInfo();
+		userInfo.setId(id);
+		logger.debug("用户信息表创建成功");
+		return new Response<UserInfo>();
+	}
 	
 	//自动删除用户信息
 	@Override
@@ -61,25 +63,8 @@ public class UserInfoService implements UserInfoInterface{
 	@Override
 	public void updateAll(UserInfo userInfo){
 		repo.save(userInfo);
-		logger.info("成功更新用户信息");
+		logger.debug("成功更新用户信息");
 	}
-	
-	//用户名模糊查找
-//	@Override
-//	public Response<List<UserInfo>> findUserInfoByName(String name, PageRequest page) {
-//		Response<List<UserInfo>> response = new Response<>();
-//		
-//		Page<UserInfo> result = repo.findByName(name, page);
-//		if (!result.hasContent()) {
-//			logger.info("未查询到任何昵称可能为"+name+"的用户");
-//			response.setErrormessage("未查询到任何昵称可能为"+name+"的用户");
-//			response.setStatus(false);
-//		}
-//		logger.debug("查询成功");
-//		response.setValue(result.getContent());
-//		response.setStatus(true);
-//		return response;
-//	}
 	
 	//更改头像
 	@Override
@@ -104,12 +89,16 @@ public class UserInfoService implements UserInfoInterface{
 	}
 	//检查余额
 	@Override
-	public Response<Integer> checkBalance(int id) {
+	public Response<Integer> checkBalance(int id,String token) {
 		Response<Integer> response = new Response<>();
+		if (!tokenChecker.checkAccessToken(token).getValue()) {
+			response.setErrormessage("验证失败，请重新登陆");
+			logger.info("token验证失败");
+			return response;
+		}
 		response.setValue(repo.findById(id).get().getBalance());
+		response.setStatus(true);
 		logger.debug("id:"+id+"余额查询成功");
 		return response;
 	}
-	
-
 }
