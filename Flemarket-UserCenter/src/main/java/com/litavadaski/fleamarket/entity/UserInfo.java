@@ -2,10 +2,6 @@ package com.litavadaski.fleamarket.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-
-import org.bson.conversions.Bson;
 
 @Entity
 public class UserInfo {

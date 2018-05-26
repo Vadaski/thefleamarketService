@@ -8,6 +8,5 @@ import com.litavadaski.fleamarket.entity.UserInfo;
 
 @Repository
 public interface UserInfoRepository extends JpaRepository<UserInfo, Integer> {
-	//返回用户名模糊查找
-	//Page<UserInfo> findByName(String name, PageRequest page);
+
 }

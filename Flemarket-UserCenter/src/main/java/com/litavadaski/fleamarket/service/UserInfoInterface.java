@@ -13,8 +13,6 @@ public interface UserInfoInterface {
 	public Response<Boolean> updateName(String name,int id,String token);
 	//更改全部信息
 	public Response<Boolean> updateAll(UserInfo userInfo,String token);
-	//用户名模糊查找
-	//public Response<List<UserInfo>> findUserInfoByName(String name,PageRequest page);
 	//更改头像
 	public void updateProfile(String profile);
 	//通过用户id获取用户信息
