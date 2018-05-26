@@ -43,7 +43,7 @@ public class AccountService implements AccountInterface{
 	@Override
 	public Response<Account> createAccount(Account account) {
 		Response<Account> response = new Response<>();
-		if (repo.findByEmail(account.getEmail()).size()<=0) {
+		if (repo.findByEmail(account.getEmail()).isEmpty()) {
 			account.setPermission(1);
 			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			account.setDate(date.format(new Date()));
@@ -69,14 +69,15 @@ public class AccountService implements AccountInterface{
 	public Response<Boolean> deleteAccount(String email,String password){
 		List<Account> accountList = repo.findByEmail(email);
 		Response<Boolean> response = new Response<>();
-		Account account = accountList.get(0);
-		if(accountList.size()<=0) {
+		if(accountList.isEmpty()) {
 //			logger.debug(account.get(0).toString());
+			System.out.println("-----------------------");
 			response.setStatus(false);
 			response.setValue(false);
 			response.setErrormessage("未查找到"+email+"账户");
 			return response;
 		}
+		Account account = accountList.get(0);
 		if(account.getPassword().equals(password)) {
 			repo.deleteById(account.getId());
 //			同时删除该用户的个人信息
@@ -98,13 +99,13 @@ public class AccountService implements AccountInterface{
 	public Response<Boolean> updatePassword(String email,String password,String newPassword) {
 		List<Account> accountList = repo.findByEmail(email);
 		Response<Boolean> response = new Response<>();
-		Account account = accountList.get(0);
-		if(accountList.size()<=0) {
+		if(accountList.isEmpty()) {
 			response.setStatus(false);
 			response.setValue(false);
 			response.setErrormessage("未查找到该账户");
 			return response;
 		}
+		Account account = accountList.get(0);
 		if(!account.isLogin()) {
 			response.setStatus(false);
 			response.setValue(false);
@@ -129,12 +130,12 @@ public class AccountService implements AccountInterface{
 	public Response<AccessToken> Loggin(String email,String password,String audience){	
 		Response<AccessToken> response = new Response<>();
 		List<Account> accountList = repo.findByEmail(email);
-		Account account = accountList.get(0);
-		if(accountList.size()<=0) {
+		if(accountList.isEmpty()) {
 			logger.debug("输入的账号有误");
 			response.setErrormessage("输入的账号有误，请重新输入");
 			return response;
 		}
+		Account account = accountList.get(0);
 		if (account.getPassword().equals(password)) {
 			logger.debug("验证通过");
 			account.setLogin(true);
@@ -154,7 +155,7 @@ public class AccountService implements AccountInterface{
 	public Response<Boolean> Unloggin(String email) {
 		Response<Boolean> response = new Response<>();
 		List<Account> accountList = repo.findByEmail(email);
-		if(accountList.size()<=0) {
+		if(accountList.isEmpty()) {
 			logger.debug("输入的账号不存在");
 			response.setErrormessage("输入的账号有误，请重新输入");
 			return response;
@@ -183,7 +184,6 @@ public class AccountService implements AccountInterface{
 	}
 	
 	//检查token
-
 	public Response<Boolean> checkToken(String token) {
 	Response<Boolean> response = tokenChecker.checkAccessToken(token);
 		return response;

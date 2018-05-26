@@ -10,7 +10,7 @@ public interface UserInfoInterface {
 	//删除用户个人信息表
 	public void deleteUserInfoById(int id);
 	//更改昵称
-	public Response<Boolean> updateName(String name,int id);
+	public Response<Boolean> updateName(String name,int id,String token);
 	//更改全部信息
 	public void updateAll(UserInfo userInfo);
 	//用户名模糊查找

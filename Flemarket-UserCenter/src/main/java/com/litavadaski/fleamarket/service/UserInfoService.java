@@ -44,19 +44,25 @@ public class UserInfoService implements UserInfoInterface{
 	
 	//更改昵称
 	@Override
-	public Response<Boolean> updateName(String name,int id) {
+	public Response<Boolean> updateName(String name,int id,String token) {
 		Response<Boolean> response = new Response<>();
 		if(repo.existsById(id)) {
-			Optional<UserInfo> userInfo = repo.findById(id);
-			userInfo.get().setName(name);
-			repo.save(userInfo.get());
-			logger.debug("昵称更改成功");
-			response.setStatus(true);
-		    response.setValue(true);
+			response.setValue(false);
+			response.setErrormessage("更改失败，不存在该账户");
 		    return response;	
 		}
-	    response.setValue(false);
+		if(!tokenChecker.checkAccessToken(token).getValue()) {
+			response.setValue(false);
+			response.setErrormessage("验证失败，请重新登陆");
+		}
+		Optional<UserInfo> userInfo = repo.findById(id);
+		userInfo.get().setName(name);
+		repo.save(userInfo.get());
+		logger.debug("昵称更改成功");
+		response.setStatus(true);
+	    response.setValue(true);
 	    return response;
+	    
 	}
 	
 	//更改全部信息
@@ -91,9 +97,10 @@ public class UserInfoService implements UserInfoInterface{
 	@Override
 	public Response<Integer> checkBalance(int id,String token) {
 		Response<Integer> response = new Response<>();
-		if (!tokenChecker.checkAccessToken(token).getValue()) {
-			response.setErrormessage("验证失败，请重新登陆");
-			logger.info("token验证失败");
+		Response<Boolean> tokenResponse = tokenChecker.checkAccessToken(token);
+		if (!tokenResponse.getValue()) {
+			response.setErrormessage(tokenResponse.getErrormessage());
+			response.setStatus(false);
 			return response;
 		}
 		response.setValue(repo.findById(id).get().getBalance());

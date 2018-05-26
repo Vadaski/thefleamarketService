@@ -34,13 +34,13 @@ public class UserInfoController {
     
 	//更新昵称
 	@PutMapping(path= "/name")
-	public Response<Boolean> updateName(@RequestParam String name,@RequestParam int id) {
-		return service.updateName(name, id);
+	public Response<Boolean> updateName(@RequestParam String name,@RequestParam int id,@RequestParam String token) {
+		return service.updateName(name, id, token);
 	}
 	
 	//更新全部个人信息
 	@PutMapping
-	public boolean update(@RequestBody UserInfo userInfo) {
+	public boolean update(@RequestBody UserInfo userInfo,@RequestParam String token) {
 		service.updateAll(userInfo);
 		return true;
 	}
