@@ -42,7 +42,7 @@ public class UserInfoService implements UserInfoInterface{
 	@Override
 	public Response<Boolean> updateName(String name,int id,String token) {
 		Response<Boolean> response = new Response<>();
-		if(repo.existsById(id)) {
+		if(!repo.existsById(id)) {
 			response.setValue(false);
 			response.setErrormessage("更改失败，不存在该账户");
 		    return response;	
@@ -71,6 +71,7 @@ public class UserInfoService implements UserInfoInterface{
 			response.setStatus(false);
 			return response;
 		}
+		userInfo.setBalance(repo.findById(userInfo.getId()).get().getBalance());
 		repo.save(userInfo);
 		logger.debug("成功更新用户信息");
 		response.setStatus(true);

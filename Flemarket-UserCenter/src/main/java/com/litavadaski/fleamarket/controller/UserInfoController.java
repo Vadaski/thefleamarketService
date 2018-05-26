@@ -43,11 +43,11 @@ public class UserInfoController {
 	}
 	
 	//检查余额
-	@GetMapping
+	@GetMapping(path="/balance")
 	public Response<Integer> checkBalance(@RequestParam int id,@RequestParam String token) {
 		return service.checkBalance(id,token);
 	}
 	
-	//TODO:传输头像模块还未完成
+	//TODO:传输头像模块
 
 }

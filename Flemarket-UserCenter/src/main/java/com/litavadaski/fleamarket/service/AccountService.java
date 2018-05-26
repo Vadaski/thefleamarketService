@@ -124,7 +124,7 @@ public class AccountService implements AccountInterface{
 		return response;
 	}
 	//登陆
-	public Response<AccessToken> Loggin(String email,String password,String audience){	
+	public Response<AccessToken> Log_in(String email,String password,String audience){	
 		Response<AccessToken> response = new Response<>();
 		List<Account> accountList = repo.findByEmail(email);
 		if(accountList.isEmpty()) {
@@ -149,7 +149,7 @@ public class AccountService implements AccountInterface{
 		
 	}
 	//退出登陆
-	public Response<Boolean> Unloggin(String email) {
+	public Response<Boolean> loggedOut(String email) {
 		Response<Boolean> response = new Response<>();
 		List<Account> accountList = repo.findByEmail(email);
 		if(accountList.isEmpty()) {

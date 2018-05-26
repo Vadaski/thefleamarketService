@@ -6,18 +6,15 @@ import javax.persistence.Id;
 @Entity
 public class UserInfo {
 	@Id
-//	@OneToOne
-//	@PrimaryKeyJoinColumn
 	private int id;
 	private String name;
-	private int phone;
+	private String phone;
 	//收货地址
 	private String address;
 	private int balance;
-	//头像图片
-	//private Bson profile;
 	//评价，初始为80，满分100
 	private int eva;
+	//个性签名
 	private String signature;
 	//会话列表
 	private int sessionList;
@@ -33,10 +30,11 @@ public class UserInfo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getPhone() {
+	
+	public String getPhone() {
 		return phone;
 	}
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 	public String getAddress() {
@@ -80,14 +78,9 @@ public class UserInfo {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		result = prime * result + balance;
-		result = prime * result + eva;
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + phone;
-		//result = prime * result + ((profile == null) ? 0 : profile.hashCode());
-		result = prime * result + sessionList;
-		result = prime * result + ((signature == null) ? 0 : signature.hashCode());
+		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		return result;
 	}
 	@Override
@@ -104,10 +97,6 @@ public class UserInfo {
 				return false;
 		} else if (!address.equals(other.address))
 			return false;
-		if (balance != other.balance)
-			return false;
-		if (eva != other.eva)
-			return false;
 		if (id != other.id)
 			return false;
 		if (name == null) {
@@ -115,33 +104,16 @@ public class UserInfo {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (phone != other.phone)
-			return false;
-//		if (profile == null) {
-//			if (other.profile != null)
-//				return false;
-//		} else if (!profile.equals(other.profile))
-//			return false;
-		if (sessionList != other.sessionList)
-			return false;
-		if (signature == null) {
-			if (other.signature != null)
+		if (phone == null) {
+			if (other.phone != null)
 				return false;
-		} else if (!signature.equals(other.signature))
+		} else if (!phone.equals(other.phone))
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
 		return "UserInfo [id=" + id + ", name=" + name + ", phone=" + phone + ", address=" + address + ", balance="
-				+ balance + ", eva=" + eva + ", signature=" + signature + ", sessionList="
-				+ sessionList + "]";
-	}
-	public UserInfo() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	
-	
+				+ balance + ", eva=" + eva + ", signature=" + signature + "]";
+	}	
 }

@@ -15,10 +15,10 @@ public interface AccountInterface {
 	public Response<Boolean> updatePassword(String email,String password,String newPassword);
 	
 	//登陆
-	public Object Loggin(String email,String password,String audience);
+	public Object Log_in(String email,String password,String audience);
 	
 	//退出登陆
-	public Response<Boolean> Unloggin(String email);
+	public Response<Boolean> loggedOut(String email);
 	
 	//查找用户
 	public Response<Account> findByEmail(String email);

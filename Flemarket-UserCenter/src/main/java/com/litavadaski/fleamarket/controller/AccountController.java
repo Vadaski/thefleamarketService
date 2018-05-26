@@ -25,7 +25,7 @@ public class AccountController {
 	
 	Logger logger = LoggerFactory.getLogger(AccountController.class);
 	
-	@PutMapping
+	@PostMapping
 	public Response<Account> createAccount(@RequestBody Account account){
 		logger.debug("正在创建账户");
 		return service.createAccount(account);
@@ -38,16 +38,21 @@ public class AccountController {
 		return response;
 	}
 	
-	@PostMapping
+	@PutMapping
 	public Response<Boolean> updatePassword(@RequestParam String email,@RequestParam String password,@RequestParam String newPassword){
 		Response<Boolean> response =
 		service.updatePassword(email, password, newPassword);
 		return response;
 	}
 	
-	@GetMapping(path="/login")
+	@PostMapping(path="/log_in")
 	public Object loggin(String email,String password,String audience){
-		return service.Loggin(email, password,audience);
+		return service.Log_in(email, password,audience);
+	}
+	
+	@PostMapping(path="/log_out")
+	public Response<Boolean> loggedOut(String email){
+		return service.loggedOut(email);
 	}
 	
 	@GetMapping(path="/test")
