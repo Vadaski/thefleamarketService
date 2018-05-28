@@ -1,0 +1,8 @@
+From openjdk
+
+Run mkdir /app/fleamarket/userCenter
+COPY /target/Flemarket-UserCenter-0.0.1.jar /app/fleamarket/userCenter
+RUN  java -jar Flemarket-UserCenter-0.0.1.jar
+
+WORKDIR /app/fleamarket/userCenter
+
