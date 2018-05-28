@@ -43,13 +43,16 @@ public class GoodsService implements GoodsInterface{
 		}
 		if (!repo.existsById(goodsId)) {
 			log.debug("删除失败，无效的id");
+			response.setStatus(false);
+			response.setValue(false);
 			response.setErrormessage("不存在此商品，请重新确认");
 			return response;
 		}
 		repo.deleteById(goodsId);
 		response.setStatus(true);
+		response.setValue(true);
 		log.info("删除成功");
-		return null;
+		return response;
 	}
 
 	@Override
