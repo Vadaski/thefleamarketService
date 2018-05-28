@@ -15,7 +15,7 @@ import com.litavadaski.fleamarket.security.JwtHelper;
 
 import io.jsonwebtoken.Claims;
 @Service
-public class TokenService {
+public class AccountTokenService {
 	@Autowired
 	private AccountRepository repo;
 	
@@ -58,17 +58,17 @@ public class TokenService {
 		Response<Boolean> response = new Response<>();
 		try {
 			Claims claims = JwtHelper.parseJWT(token, base64Secret);
-//			System.out.println("---------------------------------------");
-//			System.out.println("claims.toString:"+claims.toString());
-//			System.out.println("claims.getSubject:"+claims.getSubject());
-//			System.out.println("claims.getExpiration:"+claims.getExpiration());
-//			System.out.println("claims.getAudience:"+claims.getAudience());
-//			System.out.println("claims.getId:"+claims.getId());
-//			System.out.println("claims.getIssuer:"+claims.getIssuer());
-//			System.out.println("claims.getIssuedAt:"+claims.getIssuedAt());
-//			System.out.println("claims.getNotBefore:"+claims.getNotBefore());
-//			System.out.println("---------------------------------------");
-			//检查数字签名颁发者
+			System.out.println("---------------------------------------");
+			System.out.println("claims.toString:"+claims.toString());
+			System.out.println("claims.getSubject:"+claims.getSubject());
+			System.out.println("claims.getExpiration:"+claims.getExpiration());
+			System.out.println("claims.getAudience:"+claims.getAudience());
+			System.out.println("claims.getId:"+claims.getId());
+			System.out.println("claims.getIssuer:"+claims.getIssuer());
+			System.out.println("claims.getIssuedAt:"+claims.getIssuedAt());
+			System.out.println("claims.getNotBefore:"+claims.getNotBefore());
+			System.out.println("---------------------------------------");
+//			检查数字签名颁发者
 			if(!claims.getIssuer().equals("litavadaski")) {
 				response.setErrormessage("错误的签名");
 				response.setValue(false);

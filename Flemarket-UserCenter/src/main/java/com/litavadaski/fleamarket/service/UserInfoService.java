@@ -18,7 +18,7 @@ public class UserInfoService implements UserInfoInterface{
 	@Autowired
 	UserInfoRepository repo;
 	@Autowired
-	TokenService tokenChecker;
+	AccountTokenService tokenChecker;
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserInfoService.class);
 	

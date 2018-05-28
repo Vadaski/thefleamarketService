@@ -22,7 +22,6 @@ public class AccountController {
 	@Autowired 
 	AccountService service;
 	
-	
 	Logger logger = LoggerFactory.getLogger(AccountController.class);
 	
 	@PostMapping

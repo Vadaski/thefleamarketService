@@ -27,7 +27,7 @@ public class AccountService implements AccountInterface{
 	@Autowired
 	UserInfoService service;
 	@Autowired
-	TokenService tokenChecker;
+	AccountTokenService tokenChecker;
 	
 	@Value("${client.base64Secret}")
 	private String base64Secret;

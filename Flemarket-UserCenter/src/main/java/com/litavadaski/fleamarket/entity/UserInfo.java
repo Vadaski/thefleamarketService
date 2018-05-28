@@ -49,12 +49,6 @@ public class UserInfo {
 	public void setBalance(int balance) {
 		this.balance = balance;
 	}
-//	public Bson getProfile() {
-//		return profile;
-//	}
-//	public void setProfile(Bson profile) {
-//		this.profile = profile;
-//	}
 	public int getEva() {
 		return eva;
 	}
